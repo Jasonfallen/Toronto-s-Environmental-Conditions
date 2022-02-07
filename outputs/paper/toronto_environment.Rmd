@@ -1,1 +1,112 @@
-[toronto_environment.pdf](https://github.com/Jasonfallen/Toronto-s-Environmental-Conditions/files/8012243/toronto_environment.pdf)
+---
+title: "A Study Focus on Toronto's Environmental Conditions"
+output: pdf_document
+author: "HaoCheng Xu"
+thanks: "Code and data are available at: https://github.com/Jasonfallen/Toronto-s-Environmental-Conditions.git."
+date: 2022-02-06
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(patchwork)
+library(tidyverse)
+```
+
+## Abstract
+
+Toronto, Ontario's increased industrial pollution is having a severe influence on the city's environmental conditions. Despite the Ministry of Environment and Climate Change's attempts to enhance the environment, efforts must be refocused on a regular basis to be effective. Tree cover, pollutants discharged into the air, pollutant carcinogenic Toxic Equivalency Potentials (TEP) score, and pollutant non-carcinogenic TEP score were determined as four primary elements that might impact the ecosystem after study and debate.
+
+## Introduction
+
+Climate change is one of humanity's most critical threats. Climate change isn't just a theoretical issue; it's already happening, according to accumulating scientific data. Each new study emphasises the issue's urgency and the necessity for quick and decisive response. Rising temperatures, melting glaciers, thawing permafrost, the expansion of the range of cold-sensitive pests, and the increased severity of storms are all indications of a changing climate.
+
+Climate change is the effect of the earth's warming, which is primarily driven by human activities such as the emission of carbon dioxide and other heat-trapping gases. The burning of fossil fuels is the primary cause. These gases are released into the environment by coal-fired power plants, automobiles, and buildings heated with oil or natural gas. Climate change is exacerbated by deforestation, massive livestock operations, nitrogen fertilisers, and urban sprawl.
+
+Climate change is having an influence on the global, regional, and local levels, and it is anticipated to get worse as greenhouse gas emissions continue to rise. Even if emissions stopped tomorrow, our climate would still shift because greenhouse gases stay in the atmosphere for decades, if not millennia.
+
+More varied weather patterns and severe weather events, such as hotter summers, warmer winters, and heavy rainfall and storm events, are manifestations of global climate change on a local level. These changes' negative effects ricochet across the physical landscape, and they have the potential to overwhelm our social, environmental, and economic systems.
+
+Extreme weather events are extremely dangerous in cities like Toronto, which have a high concentration of people, property, wealth, and old infrastructure. For example, on August 19, 2005, Toronto was hit by a torrential downpour that the insurance industry has dubbed the most expensive natural catastrophe in Ontario's history. With the frequency of catastrophic weather events likely to increase in the twenty-first century, it's more important than ever to assess and adapt to our changing climate.
+
+## Data Source
+
+This report utilizes data on reported environmental states in Toronto. The reported environmental states dataset analyzed in this report was obtained in excel format from the City of Toronto Open Data Portal. The data was provided by Toronto Public Health, Toronto Parks, forestry and Recreation, Federal Ministry of the Environment and Toronto Water. Users should be aware that the data for each neighbourhood is based on a mathematical aggregation of smaller sub-areas (in this example, Census Tracts) that, when combined, constitute the complete neighbourhood. The overall total may be undercounted because smaller regions' numbers may be rounded or withheld (to comply with Statistics Canada privacy guidelines).
+
+# Methodology and Data Collection
+
+Referring to the data descriptions, tree coverage is collected through City of Toronto, Parks Forestry & Recreation, Forestry Management, with the indicator presenting total area (in square metres) of tree foliage cover identified using satellite imaging. Total Non-Carcinogenic Toxic Equivalency Potentials (TEP) Score and Total Carcinogenic Toxic Equivalency Potentials (TEP) for All Chemicals are provided by the City of Toronto's ChemTRAC chemical tracking program for 2012. Total green space are collected by City of Toronto, Parks Forestry & Recreation, 2008, referring to the total land area (in square kilometres) designated as parkland or green space (including utility corridors and utility areas such as soccer fields).  Lastly, green retrofits represents the Count of City of Toronto facilities which have undergone green retrofits to increase energy efficiency
+
+## Data Characteristics
+
+The investigation on Toronto's environmental conditions was undertaken using general statistical analysis of pertinent environmental information acquired from the Open Data Toronto database to discover probable areas of improvement in the city's neighbourhoods. Pollutants emitted into the air, pollutant carcinogenic TEP score, pollutant non-carcinogenic TEP score, and tree cover were identified as four major environmental variables. The first element is the discharge of general pollutants into the atmosphere, which degrade air quality. The Pollutant Carcinogenic TEP score is the next consideration. TEP refers to the danger of one pound of a chemical being released into the environment. The Pollutant Carcinogenic TEP score is a broad indicator of how different chemicals influence the environment and raise cancer risk. The Pollutant Non-Carcinogenic TEP score refers to non-carcinogenic substances that have a detrimental impact on neighbourhood environmental conditions. Pollutants that aren't carcinogenic can contribute to the build-up of greenhouse gases. The tree cover is the final consideration. The less trees in a neighbourhood, the more room there is for industries, businesses, and structures. As a result, larger levels of pollutants and carcinogens would be produced. The tree cover was utilised to solve the problem of two neighbourhoods having the same quantity of pollutants, with the tree cover being used to identify which neighbourhood required immediate care over the other.
+
+## Data Analysis
+
+```{r, include=FALSE}
+tep <- read.csv("TEP_score.csv")
+tep <- na.omit(tep)   
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+a1 <- tep %>% ggplot(aes(x=Tree.Cover, y=Pollutants.Released.to.Air)) + geom_point(alpha=0.7, color="antiquewhite3")
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3}
+a2 <- tep %>% ggplot(aes(x=Green.Rebate.Programs, y=Pollutants.Released.to.Air)) + geom_point(alpha=0.7, color="antiquewhite3")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3}
+a3 <- tep %>% ggplot(aes(x=Green.Spaces, y=Pollutants.Released.to.Air)) + geom_point(alpha=0.7, color="antiquewhite3")
+
+(a1 | a2 | a3 ) 
+```
+By Figure 1, it is clear to see that there is a relationship with tree cover and the total pollutants released in air. As we can see from the picture, the more tree cover a community has, the less pollutants are release. Then, in figure 2, we are seeing the same sight that green rebate programs seem to help the reduce of air pollution. As we can see from figure 2, the more green rebate programs that a community has undergone, the better condition is the pollution level. Then, in figure 3, we can see that there does seem to be a relationship between the area of green spaces and total pollutants released in air. As we can see with the less pollutants for every increase in the area of green spaces. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+b1 <- tep %>% ggplot(aes(x=Pollutant.Carcinogenic.TEP.Score, y=Pollutants.Released.to.Air)) + geom_point(alpha=0.7, color="antiquewhite3")
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3}
+b2 <- tep %>% ggplot(aes(x=Pollutant.Non.Carcinogenic.TEP.Score, y=Pollutants.Released.to.Air)) + geom_point(alpha=0.7, color="antiquewhite3")
+
+(b1 | b2 ) 
+```
+
+Furthermore, by comparing the above two plots, we see that both Pollutant Carcinogenic TEP Score and Pollutant Non Carcinogenic TEP Score contribute to the total pollutants released in air. The two graphs almost have the same distribution of scatters which means that the Pollutant Carcinogenic TEP Score and the Pollutant Non Carcinogenic TEP Score are somewhat proportional. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=3}
+b3 <- tep %>% ggplot(aes(x=Pollutant.Non.Carcinogenic.TEP.Score, y=Green.Spaces)) + geom_point(alpha=0.7, color="antiquewhite3")
+```
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+b4 <- tep %>% ggplot(aes(x=Pollutant.Non.Carcinogenic.TEP.Score, y=Tree.Cover)) + geom_point(alpha=0.7, color="antiquewhite3")
+
+(b3 | b4)
+```
+Lastly, from the above plots, we can see that the more tree cover and green space that a community has, the lower the Pollutant Non Carcinogenic TEP Score. Hence, by combining what we see from the other plots, we know that the more tree cover, green space, and green rebate programs a community has, it contributes to the positive effect in reducing air pollution. And from the above plot, we know that it seems that both Pollutant Non Carcinogenic TEP Score and Pollutant Carcinogenic TEP Score are the main contribution to the overall pollution level. 
+
+
+## Reference
+
+City of Toronto. Wellbeing Toronto – Environment – Environment – Data catalogue. Social Development, Finance & Administration; 2014, December 17. http://www1.toronto.ca/wps/portal/contentonly?vgnextoid=67f6 d05685a0c410VgnVCM10000071d60f89RCRD&vgnextchannel=74a6e03bb8d1e310VgnVCM10000071d60f89RCRD.
+
+ 
+
+City of Toronto (n.d.). Toronto at a glance. Retrieved from: https://www.toronto.ca/city-government/data-researchmaps/toronto-at-a-glance/
+
+ 
+
+Toronto Global (n.d.). Toronto Region Quick Facts. Retrieved from: https://torontoglobal.ca/Discover-Toronto-region/ Toronto-region-quick-facts
+
+ 
+
+City of Toronto (2019). TransformTO: Climate Action for a Healthy, Equitable & Prosperous Toronto [Implementation Update 2017 and 2018]. Retrieved from: https://www. toronto.ca/wp-content/uploads/2019/06/98c7-TransformTOImplementation-Update.pdf
+
+ 
+
+City of Toronto. (2019). Toronto Green Standard (TGS) V3 Revisions. Retrieved from https://www.toronto.ca/wpcontent/uploads/2019/09/9064-CityPlanning_TGSv3_ UpdatesSeptember2019.pdf
+
+ 
